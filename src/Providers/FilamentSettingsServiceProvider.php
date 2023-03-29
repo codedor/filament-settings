@@ -1,16 +1,16 @@
 <?php
 
-namespace VendorName\Skeleton\Providers;
+namespace Codedor\FilamentSettings\Providers;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class SkeletonServiceProvider extends PackageServiceProvider
+class FilamentSettingsServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
         $package
-            ->name('skeleton')
+            ->name('filament-settings')
             ->setBasePath(__DIR__ . '/../')
             ->hasConfigFile()
             ->hasMigration('create_package_table');
