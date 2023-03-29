@@ -2,10 +2,10 @@
 
 namespace Codedor\FilamentSettings\Providers;
 
+use Filament\PluginServiceProvider;
 use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class FilamentSettingsServiceProvider extends PackageServiceProvider
+class FilamentSettingsServiceProvider extends PluginServiceProvider
 {
     public function configurePackage(Package $package): void
     {

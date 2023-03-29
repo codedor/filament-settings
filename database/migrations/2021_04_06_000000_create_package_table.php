@@ -8,11 +8,11 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('package_table', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('key')->index();
+            $table->longText('value');
             $table->timestamps();
-
-            // add fields
         });
     }
 };
