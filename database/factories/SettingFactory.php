@@ -17,4 +17,3 @@ class SettingFactory extends Factory
         ];
     }
 }
-
