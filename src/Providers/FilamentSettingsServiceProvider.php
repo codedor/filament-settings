@@ -18,6 +18,8 @@ class FilamentSettingsServiceProvider extends PluginServiceProvider
             ->name('filament-settings')
             ->setBasePath(__DIR__ . '/../')
             ->hasConfigFile()
-            ->hasMigration('2021_04_06_000000_create_settings_table');
+            ->hasMigration('2021_04_06_000000_create_settings_table')
+            ->hasViews('filament-settings')
+            ->runsMigrations();
     }
 }
