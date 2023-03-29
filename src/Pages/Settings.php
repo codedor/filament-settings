@@ -6,5 +6,4 @@ use Filament\Pages\Page;
 
 class Settings extends Page
 {
-
 }
