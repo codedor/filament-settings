@@ -2,11 +2,16 @@
 
 namespace Codedor\FilamentSettings\Providers;
 
+use Codedor\FilamentSettings\Pages\Settings;
 use Filament\PluginServiceProvider;
 use Spatie\LaravelPackageTools\Package;
 
 class FilamentSettingsServiceProvider extends PluginServiceProvider
 {
+    protected array $pages = [
+        Settings::class,
+    ];
+
     public function configurePackage(Package $package): void
     {
         $package
