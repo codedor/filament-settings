@@ -2,13 +2,9 @@
 
 namespace Codedor\FilamentSettings\Pages;
 
-use Closure;
-use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
-use Filament\Resources\Form;
 
 class Settings extends Page
 {
