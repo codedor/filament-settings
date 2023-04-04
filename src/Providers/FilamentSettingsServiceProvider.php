@@ -22,9 +22,4 @@ class FilamentSettingsServiceProvider extends PluginServiceProvider
             ->hasViews('filament-settings')
             ->runsMigrations();
     }
-
-//    public function registerMacros(): void
-//    {
-//        Validator::extend('mustBeFilledIn', fn() => dd('sdfdsf'));
-//    }
 }
