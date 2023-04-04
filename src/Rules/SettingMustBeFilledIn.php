@@ -9,7 +9,7 @@ class SettingMustBeFilledIn implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        dd('sdfsdf');
+        dd('DIT WERKT');
         // Do nothing since it MAY not fail.
     }
 }
