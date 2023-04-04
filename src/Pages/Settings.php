@@ -2,16 +2,12 @@
 
 namespace Codedor\FilamentSettings\Pages;
 
-use Codedor\FilamentSettings\Models\Setting;
 use Codedor\FilamentSettings\Settings\SettingsInterface;
 use Filament\Forms\Components\Tabs;
-use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
-use function _PHPStan_cbfb23d84\React\Promise\map;
-use function Pest\Laravel\instance;
 
 class Settings extends Page
 {
@@ -50,8 +46,8 @@ class Settings extends Page
         }
 
         $this->tabs = $tabs
-            ->sortBy(fn (string $settingsTab) => method_exists($settingsTab, 'priority') ? $settingsTab::priority() : INF)
-            ->map(fn (string $settingsTab) => $settingsTab::schema());
+            ->sortBy(fn(string $settingsTab) => method_exists($settingsTab, 'priority') ? $settingsTab::priority() : INF)
+            ->map(fn(string $settingsTab) => $settingsTab::schema());
     }
 
     public function submit()
@@ -68,7 +64,7 @@ class Settings extends Page
                 ->tabs($this->tabs->map(function ($schema, $tabName) {
                     return Tabs\Tab::make($tabName)
                         ->schema($schema);
-                })->values()->toArray())
+                })->values()->toArray()),
         ];
     }
 }
