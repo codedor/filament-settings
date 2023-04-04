@@ -4,9 +4,6 @@ namespace Codedor\FilamentSettings\Providers;
 
 use Codedor\FilamentSettings\Pages\Settings;
 use Codedor\FilamentSettings\Repositories\DatabaseSettingsRepository;
-use Codedor\FilamentSettings\Repositories\SettingRepositoryInterface;
-use Codedor\FilamentSettings\Rules\SettingMustBeFilledIn;
-use Filament\Forms\Components\Field;
 use Filament\PluginServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Spatie\LaravelPackageTools\Package;
@@ -30,7 +27,7 @@ class FilamentSettingsServiceProvider extends PluginServiceProvider
 
     public function packageBooted(): void
     {
-        Validator::extend('mustBeFilledIn', fn() => true);
+        Validator::extend('mustBeFilledIn', fn () => true);
     }
 
     public function registeringPackage()

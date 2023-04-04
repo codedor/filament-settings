@@ -35,10 +35,10 @@ class Settings extends Page
             ));
 
             $tab = $namespace . str_replace(
-                    ['/', '.php'],
-                    ['\\', ''],
-                    Str::after($tab->getPathname(), app_path() . DIRECTORY_SEPARATOR)
-                );
+                ['/', '.php'],
+                ['\\', ''],
+                Str::after($tab->getPathname(), app_path() . DIRECTORY_SEPARATOR)
+            );
 
             if (is_subclass_of($tab, SettingsInterface::class)) {
                 $tabs->put($tabName, $tab);
@@ -46,8 +46,8 @@ class Settings extends Page
         }
 
         $this->tabs = $tabs
-            ->sortBy(fn(string $settingsTab) => method_exists($settingsTab, 'priority') ? $settingsTab::priority() : INF)
-            ->map(fn(string $settingsTab) => $settingsTab::schema());
+            ->sortBy(fn (string $settingsTab) => method_exists($settingsTab, 'priority') ? $settingsTab::priority() : INF)
+            ->map(fn (string $settingsTab) => $settingsTab::schema());
     }
 
     public function submit()
