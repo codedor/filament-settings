@@ -3,6 +3,7 @@
 namespace Codedor\FilamentSettings\Pages;
 
 use Codedor\FilamentSettings\SettingTabRepository;
+use Codedor\FilamentSettings\Widgets\RequiredFieldsWidget;
 use Filament\Forms\Components\Tabs;
 use Filament\Pages\Page;
 
@@ -30,6 +31,13 @@ class Settings extends Page
             Tabs::make('Settings')
                 ->persistTabInQueryString()
                 ->tabs($rep->toTabsSchema()),
+        ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            RequiredFieldsWidget::class,
         ];
     }
 }

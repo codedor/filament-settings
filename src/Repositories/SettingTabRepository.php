@@ -28,7 +28,7 @@ class SettingTabRepository
             $tab = $namespace . str_replace(
                     ['/', '.php'],
                     ['\\', ''],
-                    Str::after($tab->getPathname(), app_path() . DIRECTORY_SEPARATOR)
+                    Str::after($tab->getPathname(), SettingTabRepository . phpapp_path() . DIRECTORY_SEPARATOR)
                 );
 
             if (is_subclass_of($tab, SettingsInterface::class)) {
@@ -51,7 +51,7 @@ class SettingTabRepository
     public function getRequiredKeys()
     {
         return $this->tabs->flatten()
-            ->reject(fn(Field $field) => collect($field->getValidationRules())
+            ->filter(fn(Field $field) => collect($field->getValidationRules())
                 ->contains(fn($rule) => $rule instanceof SettingMustBeFilledIn))
             ->map(fn(Field $field) => $field->getName());
     }

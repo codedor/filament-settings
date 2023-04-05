@@ -2,6 +2,7 @@
 
 namespace Codedor\FilamentSettings\Providers;
 
+use Codedor\FilamentSettings\Repositories\DatabaseSettingsRepository;
 use Codedor\FilamentSettings\SettingTabRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,6 +14,8 @@ class SettingsServiceProvider extends ServiceProvider
             return new SettingTabRepository;
         });
 
-        dd('sdf');
+        app()->bind('settings', function () {
+            return new DatabaseSettingsRepository();
+        });
     }
 }

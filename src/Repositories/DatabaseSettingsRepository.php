@@ -2,11 +2,13 @@
 
 namespace Codedor\FilamentSettings\Repositories;
 
+use Codedor\FilamentSettings\Models\Setting;
+
 class DatabaseSettingsRepository implements SettingRepositoryInterface
 {
     public function get(string $key, $default = null): mixed
     {
-        // TODO: Implement get() method.
+        return Setting::query()->where('key', $key)->first();
     }
 
     public function set(array|string $key, mixed $value): void

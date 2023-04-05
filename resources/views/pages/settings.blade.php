@@ -1,7 +1,11 @@
-<form wire:submit.prevent="submit">
-    {{ $this->form }}
+<x-filament::page>
 
-    <button type="submit">
-        Submit
-    </button>
-</form>
+    <form wire:submit.prevent="submit">
+        {{ $this->form }}
+
+        <button type="submit">
+            Submit
+        </button>
+    </form>
+
+</x-filament::page>

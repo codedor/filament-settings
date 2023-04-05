@@ -7,8 +7,8 @@ if (! function_exists('setting')) {
     function setting($key, $default = null)
     {
         /** @var SettingRepositoryInterface $settingRepository */
-        $settingRepository = app(SettingRepositoryInterface::class);
+        $settingRepository = app('settings');
 
-        dd($settingRepository);
+        return $settingRepository->get($key);
     }
 }

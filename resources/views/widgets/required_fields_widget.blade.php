@@ -5,7 +5,9 @@
 
     <div>
         @foreach($requiredKeys as $requiredKey)
-            {{ $requiredKey }} {{ setting($requiredKey) }}
+            <div>
+                {{ $requiredKey }} - {{ setting($requiredKey) ? "OK" : "Needs check!" }}
+            </div>
         @endforeach
     </div>
 </div>
