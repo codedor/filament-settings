@@ -43,7 +43,8 @@
     "extra" : {
         "laravel" : {
             "providers" : [
-                "Codedor\\FilamentSettings\\Providers\\FilamentSettingsServiceProvider"
+                "Codedor\\FilamentSettings\\Providers\\FilamentSettingsServiceProvider",
+                "Codedor\\FilamentSettings\\Providers\\SettingsServiceProvider"
             ]
         }
     },

@@ -4,7 +4,7 @@
 use Codedor\FilamentSettings\Repositories\SettingRepositoryInterface;
 
 if (! function_exists('setting')) {
-    function setting($key, $default)
+    function setting($key, $default = null)
     {
         /** @var SettingRepositoryInterface $settingRepository */
         $settingRepository = app(SettingRepositoryInterface::class);
