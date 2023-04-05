@@ -2,7 +2,7 @@
 
 namespace Codedor\FilamentSettings\Widgets;
 
-use Codedor\FilamentSettings\SettingTabRepository;
+use Codedor\FilamentSettings\Repositories\SettingTabRepository;
 use Filament\Widgets\Widget;
 
 class RequiredFieldsWidget extends Widget

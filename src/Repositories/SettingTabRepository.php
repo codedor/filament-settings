@@ -1,6 +1,6 @@
 <?php
 
-namespace Codedor\FilamentSettings;
+namespace Codedor\FilamentSettings\Repositories;
 
 use Codedor\FilamentSettings\Rules\SettingMustBeFilledIn;
 use Codedor\FilamentSettings\Settings\SettingsInterface;
@@ -28,8 +28,7 @@ class SettingTabRepository
             $tab = $namespace . str_replace(
                     ['/', '.php'],
                     ['\\', ''],
-                    Str::after($tab->getPathname(), SettingTabRepository . phpapp_path() . DIRECTORY_SEPARATOR)
-                );
+                    Str::after($tab->getPathname(), app_path() . DIRECTORY_SEPARATOR));
 
             if (is_subclass_of($tab, SettingsInterface::class)) {
                 $this->tabs->put($tabName, $tab);
@@ -44,6 +43,13 @@ class SettingTabRepository
     public function toTabsSchema(): array
     {
         return $this->tabs->map(function ($schema, $tabName) {
+            $schema = collect($schema)->map(function (Field $field) {
+                /** @var \Codedor\FilamentSettings\Repositories\SettingRepositoryInterface $repository */
+                $repository = app(DatabaseSettingsRepository::class);
+
+                return $field->default(fn() => $repository->get($field->getName()));
+            })->toArray();
+
             return Tab::make($tabName)->schema($schema);
         })->values()->toArray();
     }

@@ -2,9 +2,11 @@
 
 namespace Codedor\FilamentSettings\Pages;
 
-use Codedor\FilamentSettings\SettingTabRepository;
+use Codedor\FilamentSettings\Repositories\DatabaseSettingsRepository;
+use Codedor\FilamentSettings\Repositories\SettingTabRepository;
 use Codedor\FilamentSettings\Widgets\RequiredFieldsWidget;
 use Filament\Forms\Components\Tabs;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 
 class Settings extends Page
@@ -18,8 +20,18 @@ class Settings extends Page
 
     public function submit()
     {
-        $state = $this->form->getState();
-        dd($state);
+        /** @var \Codedor\FilamentSettings\Repositories\SettingRepositoryInterface $repository */
+        $repository = app(DatabaseSettingsRepository::class);
+
+        collect($this->form->getState())
+            ->dot()
+            ->each(fn($value, $key) => $repository->set($key, $value));
+
+        Notification::make()
+            ->title('Settings')
+            ->body(__('filament-settings::admin.saved'))
+            ->success()
+            ->send();
     }
 
     protected function getFormSchema(): array

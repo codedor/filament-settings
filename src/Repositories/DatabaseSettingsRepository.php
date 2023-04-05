@@ -8,12 +8,22 @@ class DatabaseSettingsRepository implements SettingRepositoryInterface
 {
     public function get(string $key, $default = null): mixed
     {
-        return Setting::query()->where('key', $key)->first();
+        return Setting::query()->where('key', $key)->first()?->value;
     }
 
     public function set(array|string $key, mixed $value): void
     {
-        // TODO: Implement set() method.
+        if (! is_array($key)) {
+            $key = [$key => $value];
+        }
+
+        foreach ($key as $keyToSave => $valueToSave) {
+            Setting::query()->updateOrCreate([
+                'key' => $keyToSave,
+            ], [
+                'value' => $value,
+            ]);
+        }
     }
 
     public function has(string $key): bool
