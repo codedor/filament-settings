@@ -30,7 +30,10 @@
         "psr-4" : {
             "Codedor\\FilamentSettings\\" : "src",
             "Codedor\\FilamentSettings\\Database\\Factories\\" : "database/factories"
-        }
+        },
+        "files" : [
+            "src/Helpers/helpers.php"
+        ]
     },
     "autoload-dev" : {
         "psr-4" : {
