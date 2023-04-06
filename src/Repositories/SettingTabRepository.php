@@ -44,8 +44,8 @@ class SettingTabRepository
     {
         return $this->tabs->map(function ($schema, $tabName) {
             $schema = collect($schema)->map(function (Field $field) {
-                /** @var \Codedor\FilamentSettings\Repositories\SettingRepositoryInterface $repository */
-                $repository = app(DatabaseSettingsRepository::class);
+                /** @var SettingRepositoryInterface $repository */
+                $repository = app(SettingRepositoryInterface::class);
 
                 return $field->default(fn() => $repository->get($field->getName()));
             })->toArray();
