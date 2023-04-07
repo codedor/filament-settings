@@ -2,8 +2,8 @@
 
 namespace Codedor\FilamentSettings\Providers;
 
-use Codedor\FilamentSettings\Repositories\DatabaseSettingsRepository;
-use Codedor\FilamentSettings\Repositories\SettingRepositoryInterface;
+use Codedor\FilamentSettings\Drivers\DatabaseDriver;
+use Codedor\FilamentSettings\Drivers\DriverInterface;
 use Codedor\FilamentSettings\Repositories\SettingTabRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,10 +15,10 @@ class SettingsServiceProvider extends ServiceProvider
             return new SettingTabRepository();
         });
 
-        app()->bind(SettingRepositoryInterface::class, DatabaseSettingsRepository::class);
+        app()->bind(DriverInterface::class, DatabaseDriver::class);
 
-        app()->bind('settings', function () {
-            return app(SettingRepositoryInterface::class);
+        app()->singleton('setting', function () {
+            return app(DriverInterface::class);
         });
     }
 }
