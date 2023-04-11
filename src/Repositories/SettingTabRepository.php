@@ -2,6 +2,7 @@
 
 namespace Codedor\FilamentSettings\Repositories;
 
+use Codedor\FilamentSettings\Drivers\DriverInterface;
 use Codedor\FilamentSettings\Rules\SettingMustBeFilledIn;
 use Codedor\FilamentSettings\Settings\SettingsInterface;
 use Filament\Forms\Components\Field;
@@ -44,8 +45,8 @@ class SettingTabRepository
     {
         return $this->tabs->map(function ($schema, $tabName) {
             $schema = collect($schema)->map(function (Field $field) {
-                /** @var SettingRepositoryInterface $repository */
-                $repository = app(SettingRepositoryInterface::class);
+                /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $repository */
+                $repository = app(DriverInterface::class);
 
                 return $field->default(fn() => $repository->get($field->getName()));
             })->toArray();

@@ -2,6 +2,7 @@
 
 namespace Codedor\FilamentSettings\Pages;
 
+use Codedor\FilamentSettings\Drivers\DriverInterface;
 use Codedor\FilamentSettings\Repositories\SettingRepositoryInterface;
 use Codedor\FilamentSettings\Repositories\SettingTabRepository;
 use Codedor\FilamentSettings\Widgets\RequiredFieldsWidget;
@@ -20,8 +21,8 @@ class Settings extends Page
 
     public function submit()
     {
-        /** @var SettingRepositoryInterface $repository */
-        $repository = app(SettingRepositoryInterface::class);
+        /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $repository */
+        $repository = app(DriverInterface::class);
 
         collect($this->form->getState())
             ->dot()
