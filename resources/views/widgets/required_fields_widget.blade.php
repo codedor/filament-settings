@@ -6,7 +6,7 @@
     <div>
         @foreach($requiredKeys as $requiredKey)
             <div>
-                {{ $requiredKey }} - {{ setting($requiredKey) ? "OK" : "Needs check!" }}
+                {{ $requiredKey }} - {{ setting($requiredKey) ? __('filament-settings::widget.setting ok') : __('filament-settings::widget.setting needs check') }}
             </div>
         @endforeach
     </div>
