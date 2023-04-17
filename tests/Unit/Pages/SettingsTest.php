@@ -37,3 +37,28 @@ it('mounts with right values', function () {
         ],
     ]);
 });
+
+it('saves new setting', function () {
+    $fakeOldValue = fake()->word;
+
+    /** @var SettingTabRepository $repo */
+    $repo = app(SettingTabRepository::class);
+
+    $repo->registerTab([
+        TestSettings::class,
+    ]);
+
+    /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $settingsRepo */
+    $settingsRepo = app(DriverInterface::class);
+    $settingsRepo->set('site.name', $fakeOldValue);
+
+    Livewire::test(Settings::class)
+        ->fillForm([
+            'site.name' => 'new-name',
+            'site.url' => 'new-url',
+        ])
+        ->call('submit');
+
+    expect(setting('site.name'))->toBe('new-name')
+        ->and(setting('site.url'))->toBe('new-url');
+});
