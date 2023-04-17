@@ -1,8 +1,4 @@
-# This is my package filament-settings
-
-## 
-
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+# Filament Settings
 
 ## Installation
 
@@ -12,37 +8,10 @@ You can install the package via composer:
 composer require codedor/filament-settings
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="filament-settings-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="filament-settings-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="filament-settings-views"
-```
-
 ## Usage
 
 ```php
-$filamentSettings = new Codedor\FilamentSettings();
-echo $filamentSettings->echoPhrase('Hello, Codedor!');
+setting('site.name', 'Filament Settings');
 ```
 
 ## Documentation

@@ -37,7 +37,8 @@ class SettingTabRepository
                 return [Str::ucfirst(Str::headline($className)) => $tab];
             })
             ->merge($this->tabs)
-            ->sortBy(fn(string $settingsTab) => method_exists($settingsTab, 'priority') ? $settingsTab::priority() : INF);
+            ->sortBy(fn(string $settingsTab) => method_exists($settingsTab, 'priority') ? $settingsTab::priority() : INF)
+            ->unique(fn($value, $key) => $key);
 
         return $this;
     }
