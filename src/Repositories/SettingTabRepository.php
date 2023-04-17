@@ -9,41 +9,42 @@ use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Tabs\Tab;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Symfony\Component\Finder\Finder;
 
 class SettingTabRepository
 {
-    public Collection $tabs;
+    protected Collection $tabs;
 
     public function __construct()
     {
         $this->tabs = collect();
-        $settingsPath = app_path('Settings');
+    }
 
-        foreach ((new Finder)->in($settingsPath)->files() as $tab) {
-            $namespace = app()->getNamespace();
-            $tabName = Str::ucfirst(Str::headline(
-                Str::replaceLast('.php', '', $tab->getRelativePathname())
-            ));
-
-            $tab = $namespace . str_replace(
-                    ['/', '.php'],
-                    ['\\', ''],
-                    Str::after($tab->getPathname(), app_path() . DIRECTORY_SEPARATOR));
-
-            if (is_subclass_of($tab, SettingsInterface::class)) {
-                $this->tabs->put($tabName, $tab);
-            }
+    public function registerTab(string|array $tab): static
+    {
+        if (! is_array($tab)) {
+            $tab = [$tab];
         }
 
-        $this->tabs = $this->tabs
-            ->sortBy(fn(string $settingsTab) => method_exists($settingsTab, 'priority') ? $settingsTab::priority() : INF)
-            ->map(fn(string $settingsTab) => $settingsTab::schema());
+        $this->tabs = collect($tab)
+            ->reject(fn($tab) => ! is_subclass_of($tab, SettingsInterface::class))
+            ->mapWithKeys(function ($tab) {
+                $className = Str::replace(
+                    Str::beforeLast($tab, '\\') . '\\',
+                    '',
+                    $tab
+                );
+
+                return [Str::ucfirst(Str::headline($className)) => $tab];
+            })
+            ->merge($this->tabs)
+            ->sortBy(fn(string $settingsTab) => method_exists($settingsTab, 'priority') ? $settingsTab::priority() : INF);
+
+        return $this;
     }
 
     public function toTabsSchema(): array
     {
-        return $this->tabs->map(function ($schema, $tabName) {
+        return $this->getTabs()->map(function ($schema, $tabName) {
             $schema = collect($schema)->map(function (Field $field) {
                 /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $repository */
                 $repository = app(DriverInterface::class);
@@ -55,9 +56,14 @@ class SettingTabRepository
         })->values()->toArray();
     }
 
+    public function getTabs(): Collection
+    {
+        return $this->tabs->map(fn(string $settingsTab) => $settingsTab::schema());
+    }
+
     public function getRequiredKeys()
     {
-        return $this->tabs->flatten()
+        return $this->getTabs()->flatten()
             ->filter(fn(Field $field) => collect($field->getValidationRules())
                 ->contains(fn($rule) => $rule instanceof SettingMustBeFilledIn))
             ->map(fn(Field $field) => $field->getName());

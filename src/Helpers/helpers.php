@@ -1,6 +1,5 @@
 <?php
 
-
 use Codedor\FilamentSettings\Facades\Setting;
 
 if (! function_exists('setting')) {

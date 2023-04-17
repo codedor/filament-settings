@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static bool has(string $key)
  * @method static void forget(string $key)
  *
- * @see \Codedor\FilamentSettings\Repositories\SettingRepositoryInterface
+ * @see \Codedor\FilamentSettings\Drivers\DatabaseDriver
  */
 class Setting extends Facade
 {
