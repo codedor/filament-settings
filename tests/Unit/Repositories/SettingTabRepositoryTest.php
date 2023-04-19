@@ -66,12 +66,12 @@ it('returns the schema for setting tabs', function () {
             Tab::make('Test Settings')
                 ->schema([
                     TextInput::make('site.name')
-                        ->default(fn() => null)
+                        ->default(fn () => null)
                         ->rules([
                             new SettingMustBeFilledIn,
                         ]),
                     TextInput::make('site.url')
-                        ->default(fn() => null),
+                        ->default(fn () => null),
                 ]),
         ]);
 });

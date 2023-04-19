@@ -25,7 +25,7 @@ class Settings extends Page
 
         collect($this->form->getState())
             ->dot()
-            ->each(fn($value, $key) => $repository->set($key, $value));
+            ->each(fn ($value, $key) => $repository->set($key, $value));
 
         Notification::make()
             ->title('Settings')
