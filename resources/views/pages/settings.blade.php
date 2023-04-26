@@ -1,10 +1,10 @@
 <x-filament::page :header-widgets-columns="4">
 
-    <form wire:submit.prevent="submit">
+    <form wire:submit.prevent="submit" class="space-y-6">
         {{ $this->form }}
 
         <x-filament-support::button type="submit">
-            Submit
+            {{ __('filament-settings::save') }}
         </x-filament-support::button>
     </form>
 

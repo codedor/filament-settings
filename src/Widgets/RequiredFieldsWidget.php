@@ -9,6 +9,8 @@ class RequiredFieldsWidget extends Widget
 {
     protected static string $view = 'filament-settings::widgets.required_fields_widget';
 
+    protected int | string | array $columnSpan = 'full';
+
     protected function getViewData(): array
     {
         return [
