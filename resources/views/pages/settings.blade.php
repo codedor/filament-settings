@@ -1,11 +1,11 @@
-<x-filament::page>
+<x-filament::page :header-widgets-columns="4">
 
     <form wire:submit.prevent="submit">
         {{ $this->form }}
 
-        <button type="submit">
+        <x-filament-support::button type="submit">
             Submit
-        </button>
+        </x-filament-support::button>
     </form>
 
 </x-filament::page>

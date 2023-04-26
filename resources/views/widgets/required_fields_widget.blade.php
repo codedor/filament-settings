@@ -1,13 +1,19 @@
-<div>
-    <div>
-        {{ __('filament-settings::widget.required fields title') }}
-    </div>
+<x-filament::widget>
+    <x-filament::card>
+        <div class="flex gap-3 w-full">
+            <x-notifications::icon icon="heroicon-o-exclamation-circle" color="danger" />
 
-    <div>
-        @foreach($requiredKeys as $requiredKey)
+            <div class="flex-1">{{ __('filament-settings::widget.required fields title') }}</div>
+        </div>
+
+        @if ($requiredKeys?->count())
             <div>
-                {{ $requiredKey }} - {{ setting($requiredKey) ? __('filament-settings::widget.setting ok') : __('filament-settings::widget.setting needs check') }}
+                @foreach($requiredKeys as $requiredKey)
+                    <div>
+                        {{ $requiredKey }} - {{ setting($requiredKey) ? __('filament-settings::widget.setting ok') : __('filament-settings::widget.setting needs check') }}
+                    </div>
+                @endforeach
             </div>
-        @endforeach
-    </div>
-</div>
+        @endif
+    </x-filament::card>
+</x-filament::widget>
