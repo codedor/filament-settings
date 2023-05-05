@@ -12,6 +12,10 @@ use Filament\Pages\Page;
 class Settings extends Page
 {
     protected static string $view = 'filament-settings::pages.settings';
+    public string $focus = '';
+    protected $queryString = [
+        'focus' => ['except' => ''],
+    ];
 
     public function mount()
     {
@@ -44,7 +48,7 @@ class Settings extends Page
         return [
             Tabs::make('Settings')
                 ->persistTabInQueryString()
-                ->tabs($rep->toTabsSchema()),
+                ->tabs($rep->toTabsSchema($this->focus)),
         ];
     }
 

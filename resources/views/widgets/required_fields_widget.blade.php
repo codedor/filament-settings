@@ -4,19 +4,19 @@
 
         @if ($requiredKeys?->count())
             <ul class="space-y-2">
-                @foreach($requiredKeys as $requiredKey)
+                @foreach($requiredKeys as $key => $data)
                     <li class="flex gap-3 w-full">
-                        {{-- TODO BE: Update on save (in settings view) --}}
-                        @if (setting($requiredKey))
-                            <x-notifications::icon icon="heroicon-o-check-circle" color="success" />
+                        @if (setting($key))
+                            <x-notifications::icon icon="heroicon-o-check-circle" color="success"/>
                         @else
-                            <x-notifications::icon icon="heroicon-o-exclamation-circle" color="danger" />
+                            <x-notifications::icon icon="heroicon-o-exclamation-circle" color="danger"/>
                         @endif
 
-                        {{-- TODO BE: Check route --}}
-                        {{-- TODO BE: Open the correct tab (and focus the correct field) --}}
-                        <a href="/admin/settings" class="flex-1">
-                            {{ $requiredKey }} - {{ setting($requiredKey) ? __('filament-settings::widget.setting ok') : __('filament-settings::widget.setting needs check') }}
+                        <a href="{{ route('filament.pages.settings', [
+                            'tab' => $data['tab'] ?? '',
+                            'focus' => $key
+                        ]) }}" class="flex-1">
+                            {{ $key }} - {{ setting($key) ? __('filament-settings::widget.setting ok') : __('filament-settings::widget.setting needs check') }}
                         </a>
                     </li>
                 @endforeach
