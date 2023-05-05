@@ -26,7 +26,7 @@ class SettingTabRepository
         }
 
         $this->tabs = collect($tab)
-            ->reject(fn($tab) => ! is_subclass_of($tab, SettingsInterface::class))
+            ->reject(fn ($tab) => ! is_subclass_of($tab, SettingsInterface::class))
             ->mapWithKeys(function ($tab) {
                 $className = Str::replace(
                     Str::beforeLast($tab, '\\') . '\\',
@@ -37,8 +37,8 @@ class SettingTabRepository
                 return [Str::ucfirst(Str::headline($className)) => $tab];
             })
             ->merge($this->tabs)
-            ->sortBy(fn(string $settingsTab) => method_exists($settingsTab, 'priority') ? $settingsTab::priority() : INF)
-            ->unique(fn($value, $key) => $key);
+            ->sortBy(fn (string $settingsTab) => method_exists($settingsTab, 'priority') ? $settingsTab::priority() : INF)
+            ->unique(fn ($value, $key) => $key);
 
         return $this;
     }
@@ -54,7 +54,7 @@ class SettingTabRepository
                     $field = $field->extraInputAttributes(['style' => 'border-color:orange!important;']);
                 }
 
-                return $field->default(fn() => $repository->get($field->getName()));
+                return $field->default(fn () => $repository->get($field->getName()));
             })->toArray();
 
             return Tab::make($tabName)->schema($schema);
@@ -63,15 +63,15 @@ class SettingTabRepository
 
     public function getTabs(): Collection
     {
-        return $this->tabs->map(fn(string $settingsTab) => $settingsTab::schema());
+        return $this->tabs->map(fn (string $settingsTab) => $settingsTab::schema());
     }
 
     public function getRequiredKeys()
     {
         return $this->getTabs()->flatten()
-            ->filter(fn(Field $field) => collect($field->getValidationRules())
-                ->contains(fn($rule) => $rule instanceof SettingMustBeFilledIn))
-            ->mapWithKeys(fn(Field $field) => [
+            ->filter(fn (Field $field) => collect($field->getValidationRules())
+                ->contains(fn ($rule) => $rule instanceof SettingMustBeFilledIn))
+            ->mapWithKeys(fn (Field $field) => [
                 $field->getName() => [
                     'tab' => '-' . Str::slug(Str::substr($field->getName(), 0, strpos($field->getName(), '.'))) . '-tab',
                 ],

@@ -12,7 +12,9 @@ use Filament\Pages\Page;
 class Settings extends Page
 {
     protected static string $view = 'filament-settings::pages.settings';
+
     public string $focus = '';
+
     protected $queryString = [
         'focus' => ['except' => ''],
     ];
@@ -29,7 +31,7 @@ class Settings extends Page
 
         collect($this->form->getState())
             ->dot()
-            ->each(fn($value, $key) => $repository->set($key, $value));
+            ->each(fn ($value, $key) => $repository->set($key, $value));
 
         Notification::make()
             ->title('Settings')
