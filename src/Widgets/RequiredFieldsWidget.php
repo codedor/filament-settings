@@ -11,6 +11,10 @@ class RequiredFieldsWidget extends Widget
 
     protected int|string|array $columnSpan = 'full';
 
+    protected $listeners = [
+        'filament-settings::refresh-widget' => '$refresh',
+    ];
+
     protected function getViewData(): array
     {
         return [

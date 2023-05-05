@@ -25,13 +25,15 @@ class Settings extends Page
 
         collect($this->form->getState())
             ->dot()
-            ->each(fn ($value, $key) => $repository->set($key, $value));
+            ->each(fn($value, $key) => $repository->set($key, $value));
 
         Notification::make()
             ->title('Settings')
             ->body(__('filament-settings::admin.saved'))
             ->success()
             ->send();
+
+        $this->emit('filament-settings::refresh-widget');
     }
 
     protected function getFormSchema(): array
