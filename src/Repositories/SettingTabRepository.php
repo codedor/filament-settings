@@ -51,7 +51,9 @@ class SettingTabRepository
                 $repository = app(DriverInterface::class);
 
                 if ($field->getName() === $focusKey) {
-                    $field = $field->extraInputAttributes(['style' => 'border-color:orange!important;']);
+                    $field = $field->extraInputAttributes([
+                        'class' => 'ring-1 ring-inset ring-warning-500 border-warning-500',
+                    ]);
                 }
 
                 return $field->default(fn () => $repository->get($field->getName()));
