@@ -25,6 +25,7 @@ class FilamentSettingsServiceProvider extends PluginServiceProvider
             ->hasConfigFile()
             ->hasMigration('2021_04_06_000000_create_settings_table')
             ->hasViews('filament-settings')
+            ->hasTranslations()
             ->runsMigrations();
     }
 }
