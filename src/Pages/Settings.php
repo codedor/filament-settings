@@ -31,11 +31,11 @@ class Settings extends Page
 
         $data = [];
 
-         foreach ($this->form->getState() as $prepend => $value) {
+        foreach ($this->form->getState() as $prepend => $value) {
             foreach ($value as $key => $item) {
                 $data["$prepend.$key"] = is_array($item) ? json_encode($item) : $item;
             }
-         }
+        }
 
         collect($data)->each(fn ($value, $key) => $repository->set($key, $value));
 
