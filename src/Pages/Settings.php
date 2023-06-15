@@ -13,6 +13,10 @@ class Settings extends Page
 {
     protected static string $view = 'filament-settings::pages.settings';
 
+    protected static ?string $navigationIcon = 'heroicon-o-cog';
+
+    protected static ?string $navigationGroup = 'Administration';
+
     public function mount()
     {
         $this->form->fill();
