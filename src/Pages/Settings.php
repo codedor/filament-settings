@@ -5,6 +5,7 @@ namespace Codedor\FilamentSettings\Pages;
 use Codedor\FilamentSettings\Drivers\DriverInterface;
 use Codedor\FilamentSettings\Repositories\SettingTabRepository;
 use Codedor\FilamentSettings\Widgets\RequiredFieldsWidget;
+use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Tabs;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -19,6 +20,16 @@ class Settings extends Page
         'focus' => ['except' => ''],
     ];
 
+    public static function getNavigationGroup(): ?string
+    {
+        return config('filament-settings.navigation.group', parent::getNavigationGroup());
+    }
+
+    public static function getNavigationIcon(): string
+    {
+        return config('filament-settings.navigation.icon', parent::getNavigationIcon());
+    }
+
     public function mount()
     {
         $this->form->fill();
@@ -27,11 +38,16 @@ class Settings extends Page
     public function submit()
     {
         /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $repository */
-        $repository = app(DriverInterface::class);
+        $interface = app(DriverInterface::class);
 
-        collect($this->form->getState())
-            ->dot()
-            ->each(fn ($value, $key) => $repository->set($key, $value));
+        app(SettingTabRepository::class)
+            ->getTabs()
+            ->flatten(1)
+            ->each(function (Field $field) use ($interface) {
+                $statePath = $field->getName();
+
+                $interface->set($statePath, data_get($this, $statePath));
+            });
 
         Notification::make()
             ->title('Settings')

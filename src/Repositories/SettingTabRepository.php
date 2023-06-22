@@ -49,14 +49,19 @@ class SettingTabRepository
             $schema = collect($schema)->map(function (Field $field) use ($focusKey) {
                 /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $repository */
                 $repository = app(DriverInterface::class);
+                $fieldName = $field->getName();
 
-                if ($field->getName() === $focusKey) {
+                if ($fieldName === $focusKey && method_exists($field, 'extraInputAttributes')) {
                     $field = $field->extraInputAttributes([
                         'class' => 'ring-1 ring-inset ring-warning-500 border-warning-500',
                     ]);
                 }
 
-                return $field->default(fn () => $repository->get($field->getName()));
+                // Try to decode the value, if it fails, return the original value
+                $value = $repository->get($fieldName);
+                $value = json_decode($value, true) ?? $value;
+
+                return $field->default($value);
             })->toArray();
 
             return Tab::make($tabName)->schema($schema);
