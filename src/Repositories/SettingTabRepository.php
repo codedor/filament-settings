@@ -50,7 +50,11 @@ class SettingTabRepository
                 /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $repository */
                 $repository = app(DriverInterface::class);
 
-                return $field->default(fn () => $repository->get($field->getName()));
+                // Try to decode the value, if it fails, return the original value
+                $value = $repository->get($field->getName());
+                $value = json_decode($value, true) ?? $value;
+
+                return $field->default($value);
             })->toArray();
 
             return Tab::make($tabName)->schema($schema);
