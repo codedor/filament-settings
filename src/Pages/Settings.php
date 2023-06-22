@@ -37,17 +37,18 @@ class Settings extends Page
 
     public function submit()
     {
-        /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $repository */
+        /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $interface */
         $interface = app(DriverInterface::class);
 
-        app(SettingTabRepository::class)
-            ->getTabs()
-            ->flatten(1)
-            ->each(function (Field $field) use ($interface) {
-                $statePath = $field->getName();
+        $data = [];
 
-                $interface->set($statePath, data_get($this, $statePath));
-            });
+        foreach ($this->form->getState() as $tab => $values) {
+            foreach ($values as $key => $value) {
+                $data["$tab.$key"] = is_array($value) ? json_encode($value) : $value;
+            }
+        }
+
+        collect($data)->each(fn ($value, $key) => $interface->set($key, $value));
 
         Notification::make()
             ->title('Settings')
