@@ -3,9 +3,9 @@
     <form wire:submit.prevent="submit" class="space-y-6">
         {{ $this->form }}
 
-        <x-filament-support::button type="submit">
+        <x-filament::button type="submit">
             {{ __('filament-settings::save') }}
-        </x-filament-support::button>
+        </x-filament::button>
     </form>
 
 </x-filament::page>

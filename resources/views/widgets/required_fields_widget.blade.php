@@ -1,4 +1,4 @@
-<x-filament::widget>
+<x-filament-widgets::widget>
     <x-filament::card>
         <h2 class="flex-1 text-lg font-bold">{{ __('filament-settings::widget.required fields title') }}</h2>
 
@@ -7,12 +7,12 @@
                 @foreach($requiredKeys as $key => $data)
                     <li class="flex gap-3 w-full">
                         @if (setting($key))
-                            <x-notifications::icon icon="heroicon-o-check-circle" color="success"/>
+                            <x-filament::icon icon="heroicon-o-check-circle" class="success" />
                         @else
-                            <x-notifications::icon icon="heroicon-o-exclamation-circle" color="danger"/>
+                            <x-filament::icon icon="heroicon-o-exclamation-circle" class="danger" />
                         @endif
 
-                        <a href="{{ route('filament.pages.settings', [
+                        <a href="{{ \Codedor\FilamentSettings\Pages\Settings::getUrl([
                             'tab' => $data['tab'] ?? '',
                             'focus' => $key
                         ]) }}" class="flex-1">
@@ -23,4 +23,4 @@
             </ul>
         @endif
     </x-filament::card>
-</x-filament::widget>
+</x-filament-widgets::widget>
