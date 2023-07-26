@@ -4,7 +4,6 @@ namespace Codedor\FilamentSettings\Providers;
 
 use Codedor\FilamentSettings\Drivers\DriverInterface;
 use Codedor\FilamentSettings\Repositories\SettingTabRepository;
-use Illuminate\Support\ServiceProvider;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
