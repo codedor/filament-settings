@@ -6,11 +6,15 @@
             <ul class="space-y-2">
                 @foreach($requiredKeys as $key => $data)
                     <li class="flex gap-3 w-full">
-                        @if (setting($key))
-                            <x-filament::icon icon="heroicon-o-check-circle" class="success" />
-                        @else
-                            <x-filament::icon icon="heroicon-o-exclamation-circle" class="danger" />
-                        @endif
+                        @php
+                            $color = setting($key) ? 'success' : 'danger';
+                            $icon = setting($key) ? 'heroicon-o-check-circle' : 'heroicon-o-exclamation-circle';
+                        @endphp
+                        <x-filament::icon
+                            :icon="$icon"
+                            class="h-6 w-6 text-custom-400"
+                            style="{{ \Filament\Support\get_color_css_variables($color, shades: [400]) }}"
+                        />
 
                         <a href="{{ \Codedor\FilamentSettings\Pages\Settings::getUrl([
                             'tab' => $data['tab'] ?? '',

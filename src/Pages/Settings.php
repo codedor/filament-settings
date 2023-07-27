@@ -6,6 +6,7 @@ use Codedor\FilamentSettings\Drivers\DriverInterface;
 use Codedor\FilamentSettings\Repositories\SettingTabRepository;
 use Codedor\FilamentSettings\Widgets\RequiredFieldsWidget;
 use Filament\Forms\Components\Tabs;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 
@@ -15,8 +16,10 @@ class Settings extends Page
 
     public string $focus = '';
 
+    public ?array $data = [];
+
     protected $queryString = [
-        'focus' => ['except' => ''],
+        'focus',
     ];
 
     public static function getNavigationGroup(): ?string
@@ -55,19 +58,20 @@ class Settings extends Page
             ->success()
             ->send();
 
-        $this->emit('filament-settings::refresh-widget');
+        $this->dispatch('filament-settings::refresh-widget');
     }
 
-    protected function getFormSchema(): array
+    public function form(Form $form): Form
     {
         /** @var SettingTabRepository $rep */
         $rep = app(SettingTabRepository::class);
 
-        return [
-            Tabs::make('Settings')
-                ->persistTabInQueryString()
-                ->tabs($rep->toTabsSchema($this->focus)),
-        ];
+        return $form
+            ->schema([
+                Tabs::make('Settings')
+                    ->persistTabInQueryString()
+                    ->tabs($rep->toTabsSchema($this->focus)),
+            ])->statePath('data');
     }
 
     protected function getHeaderWidgets(): array
