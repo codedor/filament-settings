@@ -6,9 +6,6 @@ use Codedor\FilamentSettings\Pages\Settings;
 use Codedor\FilamentSettings\Widgets\RequiredFieldsWidget;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
-use Filament\Support\Assets\Css;
-use Filament\Support\Assets\Js;
-use Filament\Support\Facades\FilamentAsset;
 
 class SettingsPlugin implements Plugin
 {
