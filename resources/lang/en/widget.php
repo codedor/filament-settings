@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'required fields title' => 'Required settings',
     'setting ok' => 'OK',
-    'setting needs check' => 'Requires attention',
+    'required fields title' => 'Important settings',
+    'setting needs check' => 'requires attention',
+    'save' => 'Save settings',
 ];
