@@ -1,6 +1,8 @@
 <x-filament-widgets::widget>
     <x-filament::card>
-        <h2 class="flex-1 text-lg font-bold">{{ __('filament-settings::widget.required fields title') }}</h2>
+        <h2 class="flex-1 text-lg font-bold pb-4">
+            {{ __('filament-settings::widget.required fields title') }}
+        </h2>
 
         @if ($requiredKeys?->count())
             <ul class="space-y-2">
@@ -10,6 +12,7 @@
                             $color = setting($key) ? 'success' : 'danger';
                             $icon = setting($key) ? 'heroicon-o-check-circle' : 'heroicon-o-exclamation-circle';
                         @endphp
+
                         <x-filament::icon
                             :icon="$icon"
                             class="h-6 w-6 text-custom-400"
@@ -20,7 +23,10 @@
                             'tab' => $data['tab'] ?? '',
                             'focus' => $key
                         ]) }}" class="flex-1">
-                            {{ $key }} - {{ setting($key) ? __('filament-settings::widget.setting ok') : __('filament-settings::widget.setting needs check') }}
+                            {{ $data['label'] }} - {{ setting($key)
+                                ? __('filament-settings::widget.setting ok')
+                                : __('filament-settings::widget.setting needs check')
+                            }}
                         </a>
                     </li>
                 @endforeach
