@@ -51,7 +51,8 @@ it('returns all fields with SettingsMustBeFilledIn rule', function () {
         ->toArray()
         ->toBe([
             'site.name' => [
-                'tab' => '-site-tab',
+                'label' => 'Name',
+                'tab' => 'site-tab',
             ],
         ]);
 });
@@ -68,12 +69,12 @@ it('returns the schema for setting tabs', function () {
             Tab::make('Test Settings')
                 ->schema([
                     TextInput::make('site.name')
-                        ->default(fn () => null)
+                        ->default(null)
                         ->rules([
                             new SettingMustBeFilledIn,
                         ]),
                     TextInput::make('site.url')
-                        ->default(fn () => null),
+                        ->default(null),
                 ]),
         ]);
 });

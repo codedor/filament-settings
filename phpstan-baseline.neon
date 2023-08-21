@@ -1,0 +1,7 @@
+ parameters:
+ 	ignoreErrors:
+ 		-
+ 			message: "#^Access to an undefined property Codedor\\\\FilamentSettings\\\\Pages\\\\Settings\\:\\:\\$form\\.$#"
+ 			count: 2
+ 			path: src/Pages/Settings.php
+

@@ -80,7 +80,8 @@ class SettingTabRepository
                 ->contains(fn ($rule) => $rule instanceof SettingMustBeFilledIn))
             ->mapWithKeys(fn (Field $field) => [
                 $field->getName() => [
-                    'tab' => '-' . Str::slug(Str::substr($field->getName(), 0, strpos($field->getName(), '.'))) . '-tab',
+                    'label' => $field->getLabel(),
+                    'tab' => Str::of($field->getName())->before('.')->slug() . '-tab',
                 ],
             ]);
     }
