@@ -51,7 +51,8 @@ it('returns all fields with SettingsMustBeFilledIn rule', function () {
         ->toArray()
         ->toBe([
             'site.name' => [
-                'tab' => '-site-tab',
+                'label' => 'Name',
+                'tab' => 'site-tab',
             ],
         ]);
 });

@@ -20,7 +20,7 @@ it('Shows all settings that needs check', function () {
     Livewire::test(RequiredFieldsWidget::class)
         ->assertSeeTextInOrder([
             __('filament-settings::widget.required fields title'),
-            'site.name - ' . __('filament-settings::widget.setting needs check'),
+            'Name - ' . __('filament-settings::widget.setting needs check'),
         ]);
 });
 
@@ -39,6 +39,6 @@ it('Shows all settings that are oke', function () {
     Livewire::test(RequiredFieldsWidget::class)
         ->assertSeeTextInOrder([
             __('filament-settings::widget.required fields title'),
-            'site.name - ' . __('filament-settings::widget.setting ok'),
+            'Name - ' . __('filament-settings::widget.setting ok'),
         ]);
 });
