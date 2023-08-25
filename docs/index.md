@@ -79,3 +79,14 @@ This way, users are still able to save the settings when 'required' settings are
 All rules that have the SettingsMustBeFilledIn attached will appear in the RequiredFields widget on the dashboard and
 settings page. This way, users will be reminded to fill in the required settings. 
 
+### Sort tabs
+
+The tabs will be sorted by first registered. To change this, add the following method to the `Tab` class.
+Tabs without this method will be sorted first, as default is 0.
+
+```php
+public static function priority(): int
+{
+    return 1;
+}
+```

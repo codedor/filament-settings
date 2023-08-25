@@ -37,7 +37,7 @@ class SettingTabRepository
                 return [Str::ucfirst(Str::headline($className)) => $tab];
             })
             ->merge($this->tabs)
-            ->sortBy(fn (string $settingsTab) => method_exists($settingsTab, 'priority') ? $settingsTab::priority() : INF)
+            ->sortBy(fn (string $settingsTab) => method_exists($settingsTab, 'priority') ? $settingsTab::priority() : 0)
             ->unique(fn ($value, $key) => $key);
 
         return $this;
@@ -71,6 +71,11 @@ class SettingTabRepository
     public function getTabs(): Collection
     {
         return $this->tabs->map(fn (string $settingsTab) => $settingsTab::schema());
+    }
+
+    public function getAllTabs(): Collection
+    {
+        return $this->tabs;
     }
 
     public function getRequiredKeys()

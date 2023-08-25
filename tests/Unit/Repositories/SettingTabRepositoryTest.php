@@ -4,6 +4,7 @@ use Codedor\FilamentSettings\Repositories\SettingTabRepository;
 use Codedor\FilamentSettings\Rules\SettingMustBeFilledIn;
 use Codedor\FilamentSettings\Tests\TestFiles\Settings\TestInvalidSettings;
 use Codedor\FilamentSettings\Tests\TestFiles\Settings\TestSettings;
+use Codedor\FilamentSettings\Tests\TestFiles\Settings\TestSettingsWithPriority;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 
@@ -77,4 +78,17 @@ it('returns the schema for setting tabs', function () {
                         ->default(null),
                 ]),
         ]);
+});
+
+it('will sort the tabs ascending based on priority', function () {
+    /** @var \Codedor\FilamentSettings\Repositories\SettingTabRepository $repo */
+    $repo = app(SettingTabRepository::class)
+        ->registerTab(TestSettingsWithPriority::class)
+        ->registerTab(TestSettings::class);
+
+    expect($repo->getAllTabs())
+        ->sequence(
+            fn ($tab, $key) => $tab->toBe(TestSettings::class),
+            fn ($tab, $key) => $tab->toBe(TestSettingsWithPriority::class),
+        );
 });
