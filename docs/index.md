@@ -25,6 +25,12 @@ use Codedor\FilamentSettings\Settings\SettingsInterface;
 
 class Tab implements SettingsInterface
 {
+    // Optional title function, remove to generate automatically
+    public static function title(): string
+    {
+        return 'Tab title';
+    }
+
     public static function schema(): array
     {
         return [];
