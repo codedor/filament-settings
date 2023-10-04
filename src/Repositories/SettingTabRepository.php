@@ -28,13 +28,13 @@ class SettingTabRepository
         $this->tabs = collect($tab)
             ->reject(fn ($tab) => ! is_subclass_of($tab, SettingsInterface::class))
             ->mapWithKeys(function ($tab) {
-                $className = Str::replace(
-                    Str::beforeLast($tab, '\\') . '\\',
-                    '',
-                    $tab
-                );
+                $tabTitle = $tab::title() ?? Str::of($tab)
+                    ->afterLast('\\')
+                    ->replaceMatches('/([A-Z])/', ' $1')
+                    ->headline()
+                    ->ucfirst();
 
-                return [Str::ucfirst(Str::headline($className)) => $tab];
+                return [(string) $tabTitle => $tab];
             })
             ->merge($this->tabs)
             ->sortBy(fn (string $settingsTab) => method_exists($settingsTab, 'priority') ? $settingsTab::priority() : 0)
@@ -80,9 +80,10 @@ class SettingTabRepository
 
     public function getRequiredKeys()
     {
-        return $this->getTabs()->flatten()
+        return $this->getTabs()
+            ->flatten()
             ->filter(fn (Field $field) => collect($field->getValidationRules())
-                ->contains(fn ($rule) => $rule instanceof SettingMustBeFilledIn))
+            ->contains(fn ($rule) => $rule instanceof SettingMustBeFilledIn))
             ->mapWithKeys(fn (Field $field) => [
                 $field->getName() => [
                     'label' => $field->getLabel(),
