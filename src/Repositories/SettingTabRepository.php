@@ -28,11 +28,15 @@ class SettingTabRepository
         $this->tabs = collect($tab)
             ->reject(fn ($tab) => ! is_subclass_of($tab, SettingsInterface::class))
             ->mapWithKeys(function ($tab) {
-                $tabTitle = $tab::title() ?? Str::of($tab)
-                    ->afterLast('\\')
-                    ->replaceMatches('/([A-Z])/', ' $1')
-                    ->headline()
-                    ->ucfirst();
+                if (method_exists($tab, 'title')) {
+                    $tabTitle = $tab::title();
+                } else {
+                    $tabTitle = Str::of($tab)
+                        ->afterLast('\\')
+                        ->replaceMatches('/([A-Z])/', ' $1')
+                        ->headline()
+                        ->ucfirst();
+                }
 
                 return [(string) $tabTitle => $tab];
             })
