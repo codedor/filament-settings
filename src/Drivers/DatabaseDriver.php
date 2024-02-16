@@ -29,7 +29,7 @@ class DatabaseDriver implements DriverInterface
         }
 
         foreach ($key as $setting) {
-            Cache::forget($this->cacheKey($setting['key']));
+            $this->forgetCache($setting['key']);
 
             Setting::query()->updateOrCreate([
                 'key' => $setting['key'],
@@ -46,7 +46,13 @@ class DatabaseDriver implements DriverInterface
 
     public function forget(string $key): void
     {
+        $this->forgetCache($key);
         Setting::query()->key($key)->delete();
+    }
+
+    private function fetch(string $key)
+    {
+        return Setting::query()->key($key)->first()?->value;
     }
 
     private function cacheKey(string $key)
@@ -54,8 +60,8 @@ class DatabaseDriver implements DriverInterface
         return "setting.{$key}";
     }
 
-    private function fetch(string $key)
+    private function forgetCache(string $key): void
     {
-        return Setting::query()->key($key)->first()?->value;
+        Cache::forget($this->cacheKey($key));
     }
 }
