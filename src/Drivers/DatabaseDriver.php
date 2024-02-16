@@ -3,12 +3,18 @@
 namespace Codedor\FilamentSettings\Drivers;
 
 use Codedor\FilamentSettings\Models\Setting;
+use Illuminate\Support\Facades\Cache;
 
 class DatabaseDriver implements DriverInterface
 {
-    public function get(string $key, $default = null): mixed
+    public function get(string $key, mixed $default = null, $useCache = true): mixed
     {
-        return Setting::query()->key($key)->first()?->value ?: $default;
+        if (! $useCache) {
+            return $this->fetch($key) ?? $default;
+        }
+
+        return Cache::rememberForever($this->cacheKey($key), fn () => $this->fetch($key))
+            ?? $default;
     }
 
     public function set(array|string $key, mixed $value = null): void
@@ -23,6 +29,8 @@ class DatabaseDriver implements DriverInterface
         }
 
         foreach ($key as $setting) {
+            Cache::forget($this->cacheKey($setting['key']));
+
             Setting::query()->updateOrCreate([
                 'key' => $setting['key'],
             ], [
@@ -39,5 +47,15 @@ class DatabaseDriver implements DriverInterface
     public function forget(string $key): void
     {
         Setting::query()->key($key)->delete();
+    }
+
+    private function cacheKey(string $key)
+    {
+        return "setting.{$key}";
+    }
+
+    private function fetch(string $key)
+    {
+        return Setting::query()->key($key)->first()?->value;
     }
 }
