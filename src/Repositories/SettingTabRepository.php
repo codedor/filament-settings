@@ -49,27 +49,14 @@ class SettingTabRepository
 
     public function toTabsSchema(string $focusKey = ''): array
     {
-        return $this->getTabs()->map(function ($schema, $tabName) use ($focusKey) {
-            $schema = collect($schema)->map(function (Field $field) use ($focusKey) {
-                /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $repository */
-                $repository = app(DriverInterface::class);
-                $fieldName = $field->getName();
+        return $this->getTabs()
+            ->map(function ($schema, $tabName) use ($focusKey) {
+                $schema = $this->buildDefaults($schema, $focusKey);
 
-                if ($fieldName === $focusKey && method_exists($field, 'extraInputAttributes')) {
-                    $field = $field->extraInputAttributes([
-                        'class' => 'ring-1 ring-inset ring-warning-500 border-warning-500',
-                    ]);
-                }
-
-                // Try to decode the value, if it fails, return the original value
-                $value = $repository->get($fieldName);
-                $value = json_decode($value, true) ?? $value;
-
-                return $field->default($value);
-            })->toArray();
-
-            return Tab::make($tabName)->schema($schema);
-        })->values()->toArray();
+                return Tab::make($tabName)->schema($schema);
+            })
+            ->values()
+            ->toArray();
     }
 
     public function getTabs(): Collection
@@ -86,13 +73,41 @@ class SettingTabRepository
     {
         return $this->getTabs()
             ->flatten()
-            ->filter(fn (Field $field) => collect($field->getValidationRules())
-                ->contains(fn ($rule) => $rule instanceof SettingMustBeFilledIn))
+            ->filter(fn ($field) => method_exists($field, 'getName') && collect($field->getValidationRules())
+            ->contains(fn ($rule) => $rule instanceof SettingMustBeFilledIn))
             ->mapWithKeys(fn (Field $field) => [
                 $field->getName() => [
                     'label' => $field->getLabel(),
                     'tab' => Str::of($field->getName())->before('.')->slug() . '-tab',
                 ],
             ]);
+    }
+
+    private function buildDefaults(array $schema, string $focusKey): mixed
+    {
+        return collect($schema)->map(function ($field) use ($focusKey) {
+            // It has children, recurse through them
+            if (! method_exists($field, 'getName')) {
+                return $field->childComponents(
+                    $this->buildDefaults($field->getChildComponents(), $focusKey)
+                );
+            }
+
+            /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $repository */
+            $repository = app(DriverInterface::class);
+            $fieldName = $field->getName();
+
+            if ($fieldName === $focusKey && method_exists($field, 'extraInputAttributes')) {
+                $field = $field->extraInputAttributes([
+                    'class' => 'ring-1 ring-inset ring-warning-500 border-warning-500',
+                ]);
+            }
+
+            // Try to decode the value, if it fails, return the original value
+            $value = $repository->get($fieldName);
+            $value = json_decode($value, true) ?? $value;
+
+            return $field->default($value);
+        })->toArray();
     }
 }
