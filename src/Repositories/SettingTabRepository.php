@@ -74,7 +74,7 @@ class SettingTabRepository
         return $this->getTabs()
             ->flatten()
             ->filter(fn ($field) => method_exists($field, 'getName') && collect($field->getValidationRules())
-            ->contains(fn ($rule) => $rule instanceof SettingMustBeFilledIn))
+                ->contains(fn ($rule) => $rule instanceof SettingMustBeFilledIn))
             ->mapWithKeys(fn (Field $field) => [
                 $field->getName() => [
                     'label' => $field->getLabel(),
