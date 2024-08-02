@@ -42,7 +42,7 @@ class SettingsServiceProvider extends PackageServiceProvider
         app()->bind(DriverInterface::class, config('filament-settings.driver'));
 
         app()->singleton(SettingTabRepository::class, function () {
-            return new SettingTabRepository();
+            return new SettingTabRepository;
         });
 
         app()->singleton('setting', function () {
