@@ -28,6 +28,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Full Changelog**: https://github.com/codedor/filament-settings/compare/v0.1.3...v1.0.0
 
+## v0.1.3 - 2023-10-04
+
+### What's changed
+
+#### Added
+
+- Possibility for custom tab titles
+
+## v0.1.2 - 2023-10-04
+
+### What's changed
+
+#### Added
+
+- Possibility for custom tab titles
+
 ## v0.1.1 - 2023-08-25
 
 **Full Changelog**: https://github.com/codedor/filament-settings/compare/v0.1.0...v0.1.1
@@ -49,21 +65,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * @jyrkidn made their first contribution in https://github.com/codedor/filament-settings/pull/8
 
 **Full Changelog**: https://github.com/codedor/filament-settings/commits/v0.1.0
-
-## v0.1.3 - 2023-10-04
-
-### What's changed
-
-#### Added
-
-- Possibility for custom tab titles
-
-## v0.1.2 - 2023-10-04
-
-### What's changed
-
-#### Added
-
-- Possibility for custom tab titles
 
 ## [Unreleased]
