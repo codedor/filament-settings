@@ -90,7 +90,7 @@ it('saves setting provided with key value array', function () {
 
     for ($i = 0; $i < 5; $i++) {
         $data[] = [
-            'key' => fake()->word,
+            'key' => fake()->unique()->word,
             'value' => fake()->word,
         ];
     }
