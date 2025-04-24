@@ -87,7 +87,7 @@ class Settings extends Page
         return __('filament-settings::admin.settings title');
     }
 
-    public function getTitle(): string | Htmlable
+    public function getTitle(): string|Htmlable
     {
         return self::getNavigationLabel();
     }
