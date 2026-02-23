@@ -2,9 +2,11 @@
 
 namespace Wotz\FilamentSettings\Pages;
 
+use BackedEnum;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
+use UnitEnum;
 use Wotz\FilamentSettings\Drivers\DriverInterface;
 use Wotz\FilamentSettings\Repositories\SettingTabRepository;
 use Wotz\FilamentSettings\Widgets\RequiredFieldsWidget;
@@ -21,12 +23,12 @@ class Settings extends Page
         'focus',
     ];
 
-    public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): string|UnitEnum|null
     {
         return config('filament-settings.navigation.group', parent::getNavigationGroup());
     }
 
-    public static function getNavigationIcon(): string
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
     {
         return config('filament-settings.navigation.icon', parent::getNavigationIcon());
     }
