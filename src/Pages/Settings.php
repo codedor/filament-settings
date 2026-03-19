@@ -5,6 +5,8 @@ namespace Wotz\FilamentSettings\Pages;
 use BackedEnum;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
 use UnitEnum;
 use Wotz\FilamentSettings\Drivers\DriverInterface;
@@ -40,7 +42,7 @@ class Settings extends Page
 
     public function submit()
     {
-        /** @var \Wotz\FilamentSettings\Drivers\DriverInterface $interface */
+        /** @var DriverInterface $interface */
         $interface = app(DriverInterface::class);
 
         $data = [];
@@ -62,14 +64,14 @@ class Settings extends Page
         $this->dispatch('filament-settings::refresh-widget');
     }
 
-    public function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
+    public function form(Schema $schema): Schema
     {
         /** @var SettingTabRepository $rep */
         $rep = app(SettingTabRepository::class);
 
         return $schema
             ->components([
-                \Filament\Schemas\Components\Tabs::make('Settings')
+                Tabs::make('Settings')
                     ->persistTabInQueryString()
                     ->tabs($rep->toTabsSchema($this->focus)),
             ])->statePath('data');

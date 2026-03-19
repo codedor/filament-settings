@@ -32,7 +32,7 @@ it('Shows all settings that are oke', function () {
         TestSettings::class,
     ]);
 
-    /** @var \Wotz\FilamentSettings\Drivers\DriverInterface $settingsRepo */
+    /** @var DriverInterface $settingsRepo */
     $settingsRepo = app(DriverInterface::class);
     $settingsRepo->set('site.name', 'filament-settings');
 
