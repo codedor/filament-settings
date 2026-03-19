@@ -18,6 +18,7 @@ use Filament\Widgets\WidgetsServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
+use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
 use Wotz\FilamentSettings\Filament\SettingsPlugin;
 use Wotz\FilamentSettings\Providers\SettingsServiceProvider;
 
@@ -64,8 +65,8 @@ class TestCase extends Orchestra
             SettingsServiceProvider::class,
         ];
 
-        if (class_exists(\RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider::class)) {
-            $providers[] = \RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider::class;
+        if (class_exists(BladeCaptureDirectiveServiceProvider::class)) {
+            $providers[] = BladeCaptureDirectiveServiceProvider::class;
         }
 
         asort($providers);
