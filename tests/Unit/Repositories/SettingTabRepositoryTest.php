@@ -1,6 +1,7 @@
 <?php
 
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Tabs\Tab;
 use Wotz\FilamentSettings\Repositories\SettingTabRepository;
 use Wotz\FilamentSettings\Rules\SettingMustBeFilledIn;
 use Wotz\FilamentSettings\Tests\TestFiles\Settings\TestInvalidSettings;
@@ -8,7 +9,7 @@ use Wotz\FilamentSettings\Tests\TestFiles\Settings\TestSettings;
 use Wotz\FilamentSettings\Tests\TestFiles\Settings\TestSettingsWithPriority;
 
 it('registers settings tabs', function () {
-    /** @var \Wotz\FilamentSettings\Repositories\SettingTabRepository $repo */
+    /** @var SettingTabRepository $repo */
     $repo = app(SettingTabRepository::class);
 
     expect($repo->registerTab([
@@ -22,7 +23,7 @@ it('registers settings tabs', function () {
 })->skip('Fails because of closure mismatch');
 
 it('registers single tab', function () {
-    /** @var \Wotz\FilamentSettings\Repositories\SettingTabRepository $repo */
+    /** @var SettingTabRepository $repo */
     $repo = app(SettingTabRepository::class);
 
     expect($repo->registerTab(TestSettings::class))
@@ -34,7 +35,7 @@ it('registers single tab', function () {
 })->skip('Fails because of closure mismatch');
 
 it('does not register invalid test tab', function () {
-    /** @var \Wotz\FilamentSettings\Repositories\SettingTabRepository $repo */
+    /** @var SettingTabRepository $repo */
     $repo = app(SettingTabRepository::class);
 
     expect($repo->registerTab(TestInvalidSettings::class))
@@ -43,7 +44,7 @@ it('does not register invalid test tab', function () {
 });
 
 it('returns all fields with SettingsMustBeFilledIn rule', function () {
-    /** @var \Wotz\FilamentSettings\Repositories\SettingTabRepository $repo */
+    /** @var SettingTabRepository $repo */
     $repo = app(SettingTabRepository::class);
 
     expect($repo->registerTab(TestSettings::class))
@@ -58,7 +59,7 @@ it('returns all fields with SettingsMustBeFilledIn rule', function () {
 })->skip('Fails because of closure mismatch');
 
 it('returns the schema for setting tabs', function () {
-    /** @var \Wotz\FilamentSettings\Repositories\SettingTabRepository $repo */
+    /** @var SettingTabRepository $repo */
     $repo = app(SettingTabRepository::class);
 
     $schema = collect($repo->registerTab(TestSettings::class)->toTabsSchema());
@@ -66,7 +67,7 @@ it('returns the schema for setting tabs', function () {
     expect($schema)
         ->toArray()
         ->toMatchArray([
-            \Filament\Schemas\Components\Tabs\Tab::make('Test Settings')
+            Tab::make('Test Settings')
                 ->schema([
                     TextInput::make('site.name')
                         ->default(null)
@@ -80,7 +81,7 @@ it('returns the schema for setting tabs', function () {
 })->skip('Fails because of closure mismatch');
 
 it('will sort the tabs ascending based on priority', function () {
-    /** @var \Wotz\FilamentSettings\Repositories\SettingTabRepository $repo */
+    /** @var SettingTabRepository $repo */
     $repo = app(SettingTabRepository::class)
         ->registerTab(TestSettingsWithPriority::class)
         ->registerTab(TestSettings::class);

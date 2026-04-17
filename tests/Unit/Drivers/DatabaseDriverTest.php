@@ -16,7 +16,7 @@ it('fetches value from database', function () {
         'value' => fake()->text,
     ])->create();
 
-    /** @var \Wotz\FilamentSettings\Drivers\DriverInterface $repo */
+    /** @var DriverInterface $repo */
     $repo = app(DriverInterface::class);
 
     expect($repo->get($setting->key))
@@ -24,7 +24,7 @@ it('fetches value from database', function () {
 });
 
 it('returns default value', function () {
-    /** @var \Wotz\FilamentSettings\Drivers\DriverInterface $repo */
+    /** @var DriverInterface $repo */
     $repo = app(DriverInterface::class);
 
     expect($repo->get('no.setting', 'default-value'))
@@ -37,7 +37,7 @@ it('return true if setting exists', function () {
         'value' => fake()->text,
     ])->create();
 
-    /** @var \Wotz\FilamentSettings\Drivers\DriverInterface $repo */
+    /** @var DriverInterface $repo */
     $repo = app(DriverInterface::class);
 
     expect($repo->has($setting->key))
@@ -50,7 +50,7 @@ it('return false if setting does not exist', function () {
         'value' => fake()->text,
     ])->create();
 
-    /** @var \Wotz\FilamentSettings\Drivers\DriverInterface $repo */
+    /** @var DriverInterface $repo */
     $repo = app(DriverInterface::class);
 
     expect($repo->has(fake()->word))
@@ -63,7 +63,7 @@ it('forgets a setting', function () {
         'value' => fake()->text,
     ])->create();
 
-    /** @var \Wotz\FilamentSettings\Drivers\DriverInterface $repo */
+    /** @var DriverInterface $repo */
     $repo = app(DriverInterface::class);
     $repo->forget($setting->key);
 
@@ -74,7 +74,7 @@ it('saves setting provided with key value', function () {
     $key = fake()->word;
     $value = fake()->word;
 
-    /** @var \Wotz\FilamentSettings\Drivers\DriverInterface $repo */
+    /** @var DriverInterface $repo */
     $repo = app(DriverInterface::class);
     $repo->set($key, $value);
 
@@ -95,7 +95,7 @@ it('saves setting provided with key value array', function () {
         ];
     }
 
-    /** @var \Wotz\FilamentSettings\Drivers\DriverInterface $repo */
+    /** @var DriverInterface $repo */
     $repo = app(DriverInterface::class);
     $repo->set($data);
 

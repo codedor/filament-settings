@@ -30,7 +30,7 @@ class SettingsServiceProvider extends PackageServiceProvider
 
     protected function registerTabs(): void
     {
-        /** @var \Wotz\FilamentSettings\Repositories\SettingTabRepository $settingsTabRepository */
+        /** @var SettingTabRepository $settingsTabRepository */
         $settingsTabRepository = app(SettingTabRepository::class);
         $settingsTabRepository->registerTab(config('filament-settings.tabs', []));
     }

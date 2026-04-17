@@ -3,6 +3,7 @@
 namespace Wotz\FilamentSettings\Repositories;
 
 use Filament\Forms\Components\Field;
+use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Wotz\FilamentSettings\Drivers\DriverInterface;
@@ -50,7 +51,7 @@ class SettingTabRepository
     {
         return $this->getTabs()->map(function ($schema, $tabName) use ($focusKey) {
             $schema = collect($schema)->map(function (Field $field) use ($focusKey) {
-                /** @var \Wotz\FilamentSettings\Drivers\DriverInterface $repository */
+                /** @var DriverInterface $repository */
                 $repository = app(DriverInterface::class);
                 $fieldName = $field->getName();
 
@@ -67,7 +68,7 @@ class SettingTabRepository
                 return $field->default($value);
             })->toArray();
 
-            return \Filament\Schemas\Components\Tabs\Tab::make($tabName)->schema($schema);
+            return Tab::make($tabName)->schema($schema);
         })->values()->toArray();
     }
 
