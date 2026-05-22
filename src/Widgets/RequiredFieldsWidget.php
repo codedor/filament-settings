@@ -3,6 +3,7 @@
 namespace Wotz\FilamentSettings\Widgets;
 
 use Filament\Widgets\Widget;
+use Illuminate\Support\Collection;
 use Wotz\FilamentSettings\Repositories\SettingTabRepository;
 
 class RequiredFieldsWidget extends Widget
@@ -18,7 +19,14 @@ class RequiredFieldsWidget extends Widget
     protected function getViewData(): array
     {
         return [
-            'requiredKeys' => app(SettingTabRepository::class)->getRequiredKeys(),
+            'requiredKeys' => static::getMissingKeys(),
         ];
+    }
+
+    protected static function getMissingKeys(): Collection
+    {
+        return app(SettingTabRepository::class)
+            ->getRequiredKeys()
+            ->filter(fn (array $data, string $key): bool => blank(setting($key)));
     }
 }
