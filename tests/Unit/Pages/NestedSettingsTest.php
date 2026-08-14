@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Wotz\FilamentSettings\Drivers\DriverInterface;
 use Wotz\FilamentSettings\Pages\Settings;
 use Wotz\FilamentSettings\Repositories\SettingTabRepository;
 use Wotz\FilamentSettings\Tests\TestFiles\Settings\TestNestedSettings;
@@ -39,7 +40,7 @@ it('lists nested required keys', function () {
 });
 
 it('applies stored defaults to nested fields', function () {
-    app(\Wotz\FilamentSettings\Drivers\DriverInterface::class)->set('nested.email', 'a@b.com');
+    app(DriverInterface::class)->set('nested.email', 'a@b.com');
 
     app(SettingTabRepository::class)->registerTab([TestNestedSettings::class]);
 

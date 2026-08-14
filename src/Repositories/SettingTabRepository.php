@@ -138,7 +138,7 @@ class SettingTabRepository
                 try {
                     return collect($field->getValidationRules())
                         ->contains(fn ($rule) => $rule instanceof SettingMustBeFilledIn);
-                } catch (\Throwable) {
+                } catch (Throwable) {
                     return false;
                 }
             })
@@ -150,7 +150,7 @@ class SettingTabRepository
                             'tab' => Str::of($field->getName())->before('.')->slug() . '-tab',
                         ],
                     ];
-                } catch (\Throwable) {
+                } catch (Throwable) {
                     return [];
                 }
             });
