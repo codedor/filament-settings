@@ -5,10 +5,12 @@ namespace Codedor\FilamentSettings\Repositories;
 use Codedor\FilamentSettings\Drivers\DriverInterface;
 use Codedor\FilamentSettings\Rules\SettingMustBeFilledIn;
 use Codedor\FilamentSettings\Settings\SettingsInterface;
+use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Tabs\Tab;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Throwable;
 
 class SettingTabRepository
 {
@@ -50,26 +52,65 @@ class SettingTabRepository
     public function toTabsSchema(string $focusKey = ''): array
     {
         return $this->getTabs()->map(function ($schema, $tabName) use ($focusKey) {
-            $schema = collect($schema)->map(function (Field $field) use ($focusKey) {
-                /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $repository */
-                $repository = app(DriverInterface::class);
-                $fieldName = $field->getName();
-
-                if ($fieldName === $focusKey && method_exists($field, 'extraInputAttributes')) {
-                    $field = $field->extraInputAttributes([
-                        'class' => 'ring-1 ring-inset ring-warning-500 border-warning-500',
-                    ]);
-                }
-
-                // Try to decode the value, if it fails, return the original value
-                $value = $repository->get($fieldName);
-                $value = json_decode($value, true) ?? $value;
-
-                return $field->default($value);
-            })->toArray();
-
-            return Tab::make($tabName)->schema($schema);
+            return Tab::make($tabName)->schema($this->buildDefaults($schema, $focusKey));
         })->values()->toArray();
+    }
+
+    /**
+     * @param  array<mixed>  $schema
+     * @return array<mixed>
+     */
+    private function buildDefaults(array $schema, string $focusKey): array
+    {
+        return collect($schema)->map(function ($component) use ($focusKey) {
+            if (! $component instanceof Field) {
+                // A layout component (Section, Grid, Fieldset, ...): recurse into its children.
+                return $this->mapChildComponents(
+                    $component,
+                    fn (array $children) => $this->buildDefaults($children, $focusKey),
+                );
+            }
+
+            /** @var DriverInterface $repository */
+            $repository = app(DriverInterface::class);
+            $fieldName = $component->getName();
+
+            if ($fieldName === $focusKey && method_exists($component, 'extraInputAttributes')) {
+                $component = $component->extraInputAttributes([
+                    'class' => 'ring-1 ring-inset ring-warning-500 border-warning-500',
+                ]);
+            }
+
+            // Try to decode the value, if it fails, return the original value
+            $value = $repository->get($fieldName);
+            $value = json_decode($value, true) ?? $value;
+
+            return $component->default($value);
+        })->toArray();
+    }
+
+    /**
+     * Rebuild a layout component's child components with the given callback.
+     */
+    private function mapChildComponents(mixed $component, callable $callback): mixed
+    {
+        if (! $component instanceof Component) {
+            return $component;
+        }
+
+        try {
+            $children = $component->getChildComponents();
+        } catch (Throwable) {
+            // Children are built by a closure that needs a container, so they
+            // can only be resolved once the form is rendered.
+            return $component;
+        }
+
+        if ($children === []) {
+            return $component;
+        }
+
+        return $component->childComponents($callback($children));
     }
 
     public function removeTab(string $class): Collection
@@ -91,7 +132,7 @@ class SettingTabRepository
     public function getRequiredKeys()
     {
         return $this->getTabs()
-            ->flatten()
+            ->flatMap(fn (array $schema) => $this->flattenFields($schema))
             ->filter(fn (Field $field) => collect($field->getValidationRules())
                 ->contains(fn ($rule) => $rule instanceof SettingMustBeFilledIn))
             ->mapWithKeys(fn (Field $field) => [
@@ -100,5 +141,32 @@ class SettingTabRepository
                     'tab' => Str::of($field->getName())->before('.')->slug() . '-tab',
                 ],
             ]);
+    }
+
+    /**
+     * Collect every field in a schema, including fields nested inside layout components.
+     *
+     * @param  array<mixed>  $schema
+     * @return array<Field>
+     */
+    private function flattenFields(array $schema): array
+    {
+        return collect($schema)
+            ->flatMap(function ($component) {
+                if ($component instanceof Field) {
+                    return [$component];
+                }
+
+                $children = [];
+
+                $this->mapChildComponents($component, function (array $nested) use (&$children) {
+                    $children = $this->flattenFields($nested);
+
+                    return $nested;
+                });
+
+                return $children;
+            })
+            ->all();
     }
 }

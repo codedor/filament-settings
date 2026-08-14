@@ -9,7 +9,7 @@ use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 
 it('registers settings tabs', function () {
-    /** @var \Codedor\FilamentSettings\Repositories\SettingTabRepository $repo */
+    /** @var SettingTabRepository $repo */
     $repo = app(SettingTabRepository::class);
 
     expect($repo->registerTab([
@@ -23,7 +23,7 @@ it('registers settings tabs', function () {
 });
 
 it('registers single tab', function () {
-    /** @var \Codedor\FilamentSettings\Repositories\SettingTabRepository $repo */
+    /** @var SettingTabRepository $repo */
     $repo = app(SettingTabRepository::class);
 
     expect($repo->registerTab(TestSettings::class))
@@ -35,7 +35,7 @@ it('registers single tab', function () {
 });
 
 it('does not register invalid test tab', function () {
-    /** @var \Codedor\FilamentSettings\Repositories\SettingTabRepository $repo */
+    /** @var SettingTabRepository $repo */
     $repo = app(SettingTabRepository::class);
 
     expect($repo->registerTab(TestInvalidSettings::class))
@@ -44,7 +44,7 @@ it('does not register invalid test tab', function () {
 });
 
 it('returns all fields with SettingsMustBeFilledIn rule', function () {
-    /** @var \Codedor\FilamentSettings\Repositories\SettingTabRepository $repo */
+    /** @var SettingTabRepository $repo */
     $repo = app(SettingTabRepository::class);
 
     expect($repo->registerTab(TestSettings::class))
@@ -59,7 +59,7 @@ it('returns all fields with SettingsMustBeFilledIn rule', function () {
 });
 
 it('returns the schema for setting tabs', function () {
-    /** @var \Codedor\FilamentSettings\Repositories\SettingTabRepository $repo */
+    /** @var SettingTabRepository $repo */
     $repo = app(SettingTabRepository::class);
 
     $schema = collect($repo->registerTab(TestSettings::class)->toTabsSchema());
@@ -81,7 +81,7 @@ it('returns the schema for setting tabs', function () {
 });
 
 it('will sort the tabs ascending based on priority', function () {
-    /** @var \Codedor\FilamentSettings\Repositories\SettingTabRepository $repo */
+    /** @var SettingTabRepository $repo */
     $repo = app(SettingTabRepository::class)
         ->registerTab(TestSettingsWithPriority::class)
         ->registerTab(TestSettings::class);

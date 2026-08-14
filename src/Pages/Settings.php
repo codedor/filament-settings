@@ -40,7 +40,7 @@ class Settings extends Page
 
     public function submit()
     {
-        /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $interface */
+        /** @var DriverInterface $interface */
         $interface = app(DriverInterface::class);
 
         $data = [];

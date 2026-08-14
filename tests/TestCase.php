@@ -7,9 +7,11 @@ use BladeUI\Icons\BladeIconsServiceProvider;
 use Codedor\FilamentSettings\Filament\SettingsPlugin;
 use Codedor\FilamentSettings\Providers\SettingsServiceProvider;
 use Filament\Actions\ActionsServiceProvider;
+use Filament\Facades\Filament;
 use Filament\FilamentServiceProvider;
 use Filament\Forms\FormsServiceProvider;
 use Filament\Notifications\NotificationsServiceProvider;
+use Filament\Panel;
 use Filament\Support\SupportServiceProvider;
 use Filament\Widgets\WidgetsServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,13 +24,13 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
-        $panel = new \Filament\Panel;
+        $panel = new Panel;
         $panel
             ->id('resource-test')
             ->default(true)
             ->plugin(SettingsPlugin::make());
 
-        \Filament\Facades\Filament::registerPanel($panel);
+        Filament::registerPanel($panel);
     }
 
     protected function setUp(): void
