@@ -2,6 +2,7 @@
 
 namespace Codedor\FilamentSettings\Facades;
 
+use Codedor\FilamentSettings\Drivers\DatabaseDriver;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static bool has(string $key)
  * @method static void forget(string $key)
  *
- * @see \Codedor\FilamentSettings\Drivers\DatabaseDriver
+ * @see DatabaseDriver
  */
 class Setting extends Facade
 {

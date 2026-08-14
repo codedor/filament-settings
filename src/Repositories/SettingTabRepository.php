@@ -71,7 +71,7 @@ class SettingTabRepository
                 );
             }
 
-            /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $repository */
+            /** @var DriverInterface $repository */
             $repository = app(DriverInterface::class);
             $fieldName = $component->getName();
 

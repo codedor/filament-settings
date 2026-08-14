@@ -19,7 +19,7 @@ it('mounts with right values', function () {
         TestSettings::class,
     ]);
 
-    /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $settingsRepo */
+    /** @var DriverInterface $settingsRepo */
     $settingsRepo = app(DriverInterface::class);
     $settingsRepo->set('site.name', $fakeValue);
 
@@ -48,7 +48,7 @@ it('saves new setting', function () {
         TestSettings::class,
     ]);
 
-    /** @var \Codedor\FilamentSettings\Drivers\DriverInterface $settingsRepo */
+    /** @var DriverInterface $settingsRepo */
     $settingsRepo = app(DriverInterface::class);
     $settingsRepo->set('site.name', $fakeOldValue);
 
