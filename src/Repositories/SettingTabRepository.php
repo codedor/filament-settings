@@ -29,30 +29,38 @@ class SettingTabRepository
 
         $this->tabs = collect($tab)
             ->reject(fn ($tab) => ! is_subclass_of($tab, SettingsInterface::class))
-            ->mapWithKeys(function ($tab) {
-                if (method_exists($tab, 'title')) {
-                    $tabTitle = $tab::title();
-                } else {
-                    $tabTitle = Str::of($tab)
-                        ->afterLast('\\')
-                        ->replaceMatches('/([A-Z])/', ' $1')
-                        ->headline()
-                        ->ucfirst();
-                }
-
-                return [(string) $tabTitle => $tab];
-            })
+            // Keyed by class, not by title: tabs are registered from service providers,
+            // which run before any locale middleware. Resolving `title()` here froze the
+            // label in the config locale, so an English-language panel showed Dutch tabs.
+            ->mapWithKeys(fn ($tab) => [$tab => $tab])
             ->merge($this->tabs)
             ->sortBy(fn (string $settingsTab) => method_exists($settingsTab, 'priority') ? $settingsTab::priority() : 0)
-            ->unique(fn ($value, $key) => $key);
+            ->unique();
 
         return $this;
     }
 
+    /**
+     * Resolve a settings tab's label. Called while the schema is built, so translations
+     * use the locale of the current request.
+     */
+    public function titleFor(string $tab): string
+    {
+        if (method_exists($tab, 'title')) {
+            return (string) $tab::title();
+        }
+
+        return (string) Str::of($tab)
+            ->afterLast('\\')
+            ->replaceMatches('/([A-Z])/', ' $1')
+            ->headline()
+            ->ucfirst();
+    }
+
     public function toTabsSchema(string $focusKey = ''): array
     {
-        return $this->getTabs()->map(function ($schema, $tabName) use ($focusKey) {
-            return Tab::make($tabName)->schema($this->buildDefaults($schema, $focusKey));
+        return $this->getTabs()->map(function ($schema, $tab) use ($focusKey) {
+            return Tab::make($this->titleFor($tab))->schema($this->buildDefaults($schema, $focusKey));
         })->values()->toArray();
     }
 

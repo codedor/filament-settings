@@ -8,7 +8,3 @@
             message: "#^Property Wotz\\\\FilamentSettings\\\\Widgets\\\\RequiredFieldsWidget\\:\\:\\$view \\(view-string\\) does not accept default value of type string\\.$#"
             count: 1
             path: src/Widgets/RequiredFieldsWidget.php
-        -
-            message: "#^Static call to instance method stdClass\\:\\:title\\(\\)\\.$#"
-            count: 1
-            path: src/Repositories/SettingTabRepository.php
