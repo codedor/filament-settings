@@ -7,6 +7,7 @@ use Wotz\FilamentSettings\Rules\SettingMustBeFilledIn;
 use Wotz\FilamentSettings\Tests\TestFiles\Settings\TestInvalidSettings;
 use Wotz\FilamentSettings\Tests\TestFiles\Settings\TestSettings;
 use Wotz\FilamentSettings\Tests\TestFiles\Settings\TestSettingsWithPriority;
+use Wotz\FilamentSettings\Tests\TestFiles\Settings\TestTranslatedSettings;
 
 it('registers settings tabs', function () {
     /** @var SettingTabRepository $repo */
@@ -91,4 +92,27 @@ it('will sort the tabs ascending based on priority', function () {
             fn ($tab, $key) => $tab->toBe(TestSettings::class),
             fn ($tab, $key) => $tab->toBe(TestSettingsWithPriority::class),
         );
+});
+
+it('resolves tab titles when the schema is built, not when the tab is registered', function () {
+    // Tabs are registered from service providers, which run before any locale middleware.
+    app()->setLocale('nl');
+
+    /** @var SettingTabRepository $repo */
+    $repo = app(SettingTabRepository::class)->registerTab(TestTranslatedSettings::class);
+
+    // By the time the page renders, the request locale is in effect.
+    app()->setLocale('en');
+
+    expect($repo->toTabsSchema())
+        ->toHaveCount(1)
+        ->and($repo->toTabsSchema()[0]->getLabel())
+        ->toBe('Translated settings');
+});
+
+it('falls back to a headline of the class name when a tab has no title', function () {
+    /** @var SettingTabRepository $repo */
+    $repo = app(SettingTabRepository::class);
+
+    expect($repo->titleFor(TestSettings::class))->toBe('Test Settings');
 });
